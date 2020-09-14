@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:include="front/fragments :: head(~{::title})">
+    <title>归档 | 菜鸟先飞</title>
+    <script type="text/javascript" src="/static/front/js/page/echarts.min.js"></script>
+</head>
+
+<body>
+<!--header-->
+<header th:replace="front/fragments :: header"></header>
+<!--end header-->
+
+<!--bgcover-->
+<div th:replace="front/fragments :: bgcover"></div>
+<!--end bgcover-->
+
+<div id="app">
+    <!--content-->
+    <main class="content">
+        <div class="container archive-calendar">
+            <div class="card">
+                <div id="post-calendar" class="card-content"></div>
+            </div>
+        </div>
+
+        <div id="cd-timeline" class="container">
+            <div class="cd-timeline-block" v-for="(article, index) in articles" :key="article.id">
+                <div class="cd-timeline-img year" data-aos="zoom-in-up" v-show="isShow(article.createTime,'y')">
+                    <span href="javascript:;">{{getSpecific(article.createTime,'y')}}</span>
+                </div>
+                <div class="cd-timeline-img month" data-aos="zoom-in-up" v-show="isShow(article.createTime,'m')">
+                    <span href="javascript:;">{{getSpecific(article.createTime,'m')}}</span>
+                </div>
+                <div class="cd-timeline-img day" data-aos="zoom-in-up">
+                    <span>{{getSpecific(article.createTime,'d')}}</span>
+                </div>
+                <article class="cd-timeline-content" data-aos="fade-up">
+                    <div class="article col s12 m6">
+                        <div class="card">
+                            <a :href="'/article/'+article.id">
+                                <div class="card-image">
+                                    <img class="responsive-img lazy" src="http://vegetablebird.top:888/blog/2020/8/timg.gif"
+                                         :data-src="article.cover">
+                                    <span class="card-title">{{article.title}}</span>
+                                </div>
+                            </a>
+                            <div class="card-content article-content">
+                                <div class="summary block-with-text">{{article.summary}}</div>
+                                <div class="publish-info">
+                                    <span class="publish-date">
+                                        <i class="far fa-clock fa-fw icon-date"></i>{{article.createTime | dateFormat}}</span>
+                                    <span class="publish-author">
+                                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                        <a :href="'/page/categories?id='+article.category.id" class="post-category">{{article.category.name}}</a>
+                                     </span>
+                                </div>
+                            </div>
+                            <div class="card-action article-tags">
+                                <a :href="'/page/tags?id='+tag.id" v-for="(tag, index) in article.tagList"><span
+                                        class="chip bg-color">{{tag.name}}</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+    <!--end content-->
+    <!--pagination-->
+    <div class="container paging">
+        <div class="row">
+            <!--左边按钮-->
+            <div class="col s4 m4 l4">
+                <a class="left btn-floating btn-large waves-effect waves-light" @click="toPage(current-1)"
+                   href="#cd-timeline"
+                   :class="{disabled: current == 1}">
+                    <i class="fas fa-angle-left"></i>
+                </a>
+            </div>
+            <!--分页信息-->
+            <div class="page-info col s4 m4 l4">
+                <div class="center-align b-text-gray">{{current}} / {{pages}}</div>
+            </div>
+            <!--右边按钮-->
+            <div class="col s4 m4 l4">
+                <a class="right btn-floating btn-large waves-effect waves-light"
+                   @click="toPage(current+1)" href="#cd-timeline" :class="{disabled: current == pages}">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--end pagination-->
+</div>
+
+<!--footer-->
+<footer th:replace="front/fragments :: footer"></footer>
+<!--end footer-->
+
+<!--commons-->
+<div th:replace="front/fragments :: commons"></div>
+<!--end commons-->
+
+<!--vue-->
+<script type="text/javascript" src="/static/front/js/page/archives.js"></script>
+
+<!--scripts-->
+<div th:replace="front/fragments :: scripts"></div>
+<!--end scripts-->
+</body>
+
+</html>

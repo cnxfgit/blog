@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>评论管理</title>
+</head>
+<body>
+<div class="layuimini-container" style="background-color: #ffffff;">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset" permission="blog:comment:query">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">昵称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="nickname" autocomplete="off" class="layui-input"
+                                       placeholder="不输入则忽略昵称筛选">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">日期范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="date-range" placeholder="不输入则忽略日期范围筛选"
+                                       name="dateRange">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                            </button>
+                            <button type="reset" class="layui-btn layui-btn-primary"><i
+                                    class="layui-icon layui-icon-fonts-clear"></i> 清 空
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"
+                        permission="blog:comment:delete">批量删除
+                </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="add" permission="blog:comment:reply">回复</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"
+               permission="blog:comment:delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/my/js/comment/comment-list.js"></script>
+</body>
+</html>

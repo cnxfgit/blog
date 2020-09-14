@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>用户管理</title>
+</head>
+<link rel="stylesheet" href="/static/admin/layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css">
+<body>
+<div class="layuimini-container" style="background-color: #ffffff">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset" permission="sys:user:query">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" autocomplete="off" class="layui-input"
+                                       placeholder="不输入则忽略用户名筛选">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="email" autocomplete="off" class="layui-input"
+                                       placeholder="不输入则忽略邮箱筛选">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">日期范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="date-range" placeholder="不输入则忽略日期范围筛选"
+                                       name="dateRange">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                            </button>
+                            <button type="reset" class="layui-btn layui-btn-primary"><i
+                                    class="layui-icon layui-icon-fonts-clear"></i> 清 空
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm data-add-btn" lay-event="add" permission="sys:user:add">
+                    添加用户
+                </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"
+                        permission="sys:user:delete">批量删除
+                </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit" permission="sys:user:edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"
+               permission="sys:user:delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/my/js/user/user-list.js"></script>
+</body>
+</html>

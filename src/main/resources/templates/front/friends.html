@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:include="front/fragments :: head(~{::title})">
+    <title>友情链接 | 菜鸟先飞</title>
+    <link rel="stylesheet" type="text/css" href="/static/front/css/jqcloud.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/front/css/friends.css">
+</head>
+<body>
+<!--header-->
+<header th:replace="front/fragments :: header"></header>
+<!--end header-->
+
+<!--bgcover-->
+<div th:replace="front/fragments :: bgcover"></div>
+<!--end bgcover-->
+
+<div id="app">
+    <main class="content">
+        <div class="container friends-container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="tag-title center-align">
+                        <i class="fas fa-address-book"></i>&nbsp;&nbsp;友情链接
+                    </div>
+                    <article id="friends-link" style="position: relative;">
+                        <div class="row tags-posts friend-all">
+                            <div class="col s12 m6 l4 friend-div aos-init" data-aos="zoom-in-up"
+                                 v-for="(friend, index) in friends" :key="friend.id">
+                                <div class="card" :class="'frind-card'+(index+1)">
+                                    <div class="frind-ship">
+                                        <div class="title">
+                                            <img :src="friend.avatar" alt="img">
+                                            <div>
+                                                <h1 class="friend-name">{{friend.nickname}}</h1>
+                                                <p style="position: relative;top: -35px;">{{friend.introduction}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="friend-button">
+                                            <a :href="friend.link" target="_blank"
+                                               class="button button-glow button-rounded button-caution">
+                                                前去学习
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <!--留言墙-->
+            <div class="card">
+                <div class="card valine-card aos-init aos-animate" data-aos="fade-up" id="message-area">
+                    <div class="comment_headling"
+                         style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+                        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+                        <span>留言墙</span>
+                    </div>
+                    <div id="message-form">
+                        <input type="hidden" name="pid" v-model="message.pid"/>
+                        <div id="vcomments" class="card-content v" style="display: grid">
+                            <div class="vwrap">
+                                <div class="vheader item3">
+                                    <input name="nickname" placeholder="昵称" class="vnick vinput" type="text"
+                                           required v-model="message.nickname">
+                                    <input
+                                        name="link" placeholder="网址(http://)" class="vlink vinput" type="text"
+                                        v-model="message.link">
+                                </div>
+                                <div class="vedit">
+                                        <textarea id="veditor" class="veditor vinput"
+                                                  :placeholder="message.placeholder" name="content"
+                                                  required v-model="message.content"></textarea>
+                                </div>
+                                <div class="vcontrol" style="float: right">
+                                    <div class="col col-80 text-right">
+                                        <button type="button" class="vsubmit vbtn" @click="saveMessage">发送</button>
+                                    </div>
+                                </div>
+                                <div style="display:none;" class="vmark"></div>
+                            </div>
+                            <div class="vinfo" style="display:block;">
+                                <div class="vcount col"><span class="vnum">{{message.total}}</span>&nbsp;留言</div>
+                            </div>
+                            <div class="center-align">
+                                <div class="preloader-wrapper big active" v-show="loading">
+                                    <div class="spinner-layer spinner-blue">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vlist">
+                                <div class="vcard" v-for="(message, index) in messages" :key="message.id"
+                                     id="'message'+message.id">
+                                    <img class="vimg" :src="message.avatar">
+                                    <div class="vh">
+                                        <div class="vhead">
+                                            <span class="vnick">{{message.nickname}}</span>
+                                            <a :href="message.link" target="_blank" rel="nofollow">{{message.link}}</a>
+                                            <span class="vsys">{{message.browser}}</span>
+                                            <span class="vsys">{{message.os}}</span>
+                                            <span class="vsys">{{message.address}}</span>
+                                        </div>
+                                        <div class="vmeta">
+                                            <span class="vtime">{{message.createTime | dateFormat}}</span>
+                                            <span class="vat"
+                                                  @click="reply(message.id, message.nickname)">回复</span>
+                                        </div>
+                                        <div class="vcontent">
+                                            <p>{{message.content}}</p>
+                                        </div>
+                                        <div class="vquote"
+                                             v-if="message.children !== undefined && message.children.length > 0">
+                                            <div class="vcard" v-for="(child, index) in message.children"
+                                                 :key="child.id">
+                                                <img class="vimg"
+                                                     :src="child.avatar">
+                                                <div class="vh">
+                                                    <div class="vhead">
+                                                        <span class="vnick" >{{child.nickname}}</span>
+                                                        <a :href="child.link" target="_blank" rel="nofollow">{{child.link}}</a>
+                                                        <span class="vsys">{{child.browser}}</span>
+                                                        <span class="vsys">{{child.os}}</span>
+                                                        <span class="vsys">{{child.address}}</span>
+                                                    </div>
+                                                    <div class="vmeta">
+                                                        <span class="vtime">{{child.createTime | dateFormat}}</span>
+                                                        <span class="vat"
+                                                              @click="reply(child.id, child.nickname)">回复</span>
+                                                    </div>
+                                                    <div class="vcontent">
+                                                        <p>
+                                                            <span class="vnick">@{{child.parentMessage.nickname}}</span>&nbsp;&nbsp;{{child.content}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vempty" style="display:none;"></div>
+                            <div class="vpage txt-center" v-if="message.current < message.pages">
+                                <button type="button" class="vsubmit vbtn" @click="loadMore">加载更多</button>
+                            </div>
+                            <div class="info">
+                                <div class="power txt-right">Powered By <a href="https://valine.js.org"
+                                                                           target="_blank">Valine</a><br>v1.3.10
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!--footer-->
+<footer th:replace="front/fragments :: footer"></footer>
+<!--end footer-->
+
+<!--commons-->
+<div th:replace="front/fragments :: commons"></div>
+<!--end commons-->
+
+<!--scripts-->
+<div th:replace="front/fragments :: scripts"></div>
+<!--end scripts-->
+<script src="/static/front/js/page/Valine.min.js"></script>
+<!--vue-->
+<script type="text/javascript" src="/static/front/js/page/friends.js"></script>
+<!--弹出层-->
+<script type="text/javascript" src="/static/admin/my/js/sweetalert.js"></script>
+</body>
+</html>

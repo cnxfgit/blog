@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>编辑标签</title>
+</head>
+<body style="background-color: #ffffff;">
+<form class="layui-form layuimini-form">
+    <input type="hidden" name="id"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">标签名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" lay-reqtext="标签名称不能为空" placeholder="请输入标签名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">颜色</label>
+        <div class="layui-input-block">
+            <div>
+                <div id="color-select" lay-verify="colorVer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/xm-select/xm-select.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var tag = [[${tag}]];
+</script>
+<script src="/static/admin/my/js/tag/tag-edit.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="error/common-error :: head(~{::title})">
+    <title>403</title>
+</head>
+<body>
+<div class="error">
+    <div class="container-floud">
+        <div style="text-align: center">
+            <div class="container-error-404">
+                <div class="clip">
+                    <div class="shadow">
+                        <span class="digit thirdDigit"></span>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="shadow">
+                        <span class="digit secondDigit"></span>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="shadow">
+                        <span class="digit firstDigit"></span>
+                    </div>
+                </div>
+                <div class="msg">OH!
+                    <span class="triangle"></span>
+                </div>
+            </div>
+            <h2 class="h1">很抱歉，您没有权限执行该操作</h2>
+        </div>
+    </div>
+</div>
+<script>
+    var one = 4;
+    var two = 0;
+    var three = 3;
+</script>
+</body>
+</html>

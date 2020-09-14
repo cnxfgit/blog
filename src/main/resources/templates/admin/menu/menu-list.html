@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>菜单管理</title>
+</head>
+    <style>
+        .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
+            height: 34px;
+            line-height: 34px;
+            padding: 0 8px;
+        }
+    </style>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div>
+            <div class="layui-btn-group">
+                <button class="layui-btn" id="btn-expand">全部展开</button>
+                <button class="layui-btn" id="btn-fold">全部折叠</button>
+                <button class="layui-btn" id="btn-add" permission="sys:menu:add">添加菜单</button>
+            </div>
+            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+        </div>
+    </div>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="auth-state">
+    <a class="layui-btn layui-btn-xs" lay-event="edit" permission="sys:menu:edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" permission="sys:menu:delete">删除</a>
+</script>
+
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/my/js/menu/menu-list.js"></script>
+</body>
+</html>

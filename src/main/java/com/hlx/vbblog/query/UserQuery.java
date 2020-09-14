@@ -1,0 +1,23 @@
+package com.hlx.vbblog.query;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
+
+@ApiModel("用户查询条件")
+@Data
+public class UserQuery implements Serializable {
+    @ApiModelProperty("用户名")
+    private String username;
+
+    @ApiModelProperty("邮箱")
+    private String email;
+
+    @ApiModelProperty("开始创建日期")
+    private String startDate;
+
+    @ApiModelProperty("结束创建日期")
+    private String endDate;
+}

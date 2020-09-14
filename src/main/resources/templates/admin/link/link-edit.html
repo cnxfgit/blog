@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>编辑友链</title>
+</head>
+<body style="background-color: #ffffff;">
+<form class="layui-form layuimini-form">
+    <input type="hidden" name="id"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">昵称</label>
+        <div class="layui-input-block">
+            <input type="text" name="nickname" lay-verify="required|nickname" lay-reqtext="昵称不能为空" placeholder="请输入昵称"
+                   value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">头像</label>
+        <div class="layui-input-block">
+            <input type="url" name="avatar" lay-verify="required|url" lay-reqtext="头像url不能为空" placeholder="请输入头像url"
+                   value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label required">简介</label>
+        <div class="layui-input-block">
+            <textarea name="introduction" lay-verify="required|introduction" lay-reqtext="简介不能为空" placeholder="请输入简介"
+                      class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">网址</label>
+        <div class="layui-input-block">
+            <input type="url" name="link" lay-verify="required|url" lay-reqtext="网址url不能为空" placeholder="请输入网址url"
+                   value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">排序</label>
+        <div class="layui-input-block">
+            <input type="number" name="sort" placeholder="请输入排序值" value="" class="layui-input" lay-verify="number|sort"
+                   required="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script th:inline="javascript" type="text/javascript">
+    var link = [[${link}]];
+</script>
+<script src="/static/admin/my/js/link/link-edit.js"></script>
+</body>
+</html>

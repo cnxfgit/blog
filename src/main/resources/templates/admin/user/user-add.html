@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>添加用户</title>
+</head>
+<body style="background-color: #ffffff;">
+<form class="layui-form layuimini-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" lay-verify="required|username" lay-reqtext="用户名不能为空" placeholder="请输入用户名"
+                   value=""
+                   class="layui-input">
+            <tip>填写自己管理账号的名称</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">昵称</label>
+        <div class="layui-input-block">
+            <input type="text" name="nickname" lay-verify="required|nickname" lay-reqtext="昵称不能为空" placeholder="请输入昵称"
+                   value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">邮箱</label>
+        <div class="layui-input-block">
+            <input type="email" name="email" lay-verify="required|email" placeholder="请输入邮箱" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">状态</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|停用" value="1" checked/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">角色</label>
+        <div class="layui-input-inline">
+            <select name="roleId" lay-search id="role-select" lay-verify="role" lay-reqtext="角色不能为空">
+                <option value="" selected>请选择角色</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/my/js/user/user-add.js"></script>
+</body>
+</html>

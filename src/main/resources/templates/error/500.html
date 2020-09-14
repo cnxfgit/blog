@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="error/common-error :: head(~{::title})">
+    <title>500</title>
+</head>
+<body>
+<div class="error">
+    <div class="container-floud">
+        <div style="text-align: center">
+            <div class="container-error-500">
+                <div class="clip">
+                    <div class="shadow">
+                        <span class="digit thirdDigit"></span>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="shadow">
+                        <span class="digit secondDigit"></span>
+                    </div>
+                </div>
+                <div class="clip">
+                    <div class="shadow">
+                        <span class="digit firstDigit"></span>
+                    </div>
+                </div>
+                <div class="msg">OH!
+                    <span class="triangle"></span>
+                </div>
+            </div>
+            <h2 class="h1">很抱歉，服务器好像出错了</h2>
+        </div>
+    </div>
+</div>
+<script>
+    var one = 5;
+    var two = 0;
+    var three = 0;
+</script>
+</body>
+</html>

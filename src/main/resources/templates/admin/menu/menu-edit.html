@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>编辑菜单</title>
+</head>
+<body style="background-color: #ffffff;">
+<form class="layui-form layuimini-form">
+    <input type="hidden" name="id"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">菜单标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="required|title" lay-reqtext=">菜单标题不能为空"
+                   placeholder="请输入菜单标题"
+                   value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">权限标识</label>
+        <div class="layui-input-block">
+            <input type="text" name="authority" placeholder="请输入权限标识" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单链接</label>
+        <div class="layui-input-block">
+            <input type="text" name="href" placeholder="请输入菜单链接" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">菜单排序</label>
+        <div class="layui-input-block">
+            <input type="number" name="sort" placeholder="请输入排序值(1~1024)" value="" class="layui-input"
+                   lay-verify="number|sort">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="iconPicker" class="layui-form-label">菜单图标</label>
+        <div class="layui-input-block">
+            <input type="text" id="iconPicker" lay-filter="iconPicker" class="hide" style="display: none;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">菜单类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="1" title="目录">
+            <input type="radio" name="type" value="2" title="菜单">
+            <input type="radio" name="type" value="3" title="按钮">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">菜单可见</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="显示|隐藏" value="true">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">上级菜单</label>
+        <div class="layui-input-block">
+            <div id="menuTree" class="xm-select-demo" lay-verify="pid"></div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/xm-select/xm-select.js" charset="utf-8"></script>
+<script th:inline="javascript" type="text/javascript">
+    let menu = [[${menu}]];
+</script>
+<script src="/static/admin/my/js/menu/menu-edit.js"></script>
+</body>
+</html>

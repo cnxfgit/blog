@@ -1,0 +1,64 @@
+#服务器端口
+server:
+  port: 80
+#配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    username: ******
+    password: ******
+    platform: mysql
+    # 连接池指定 springboot2.02版本默认使用HikariCP 此处要替换成Druid
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 初始化大小，最小，最大
+      initial-size: 1
+      min-idle: 3
+      max-active: 20
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 30000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 30000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  jackson:
+    #设置JSON数据的时区和格式
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    #不序列化为null的属性
+    default-property-inclusion: non_null
+  redis:
+    #数据库索引
+    database: 0
+    host: localhost
+    port: 6379
+    password: ******
+    #连接超时时间
+    timeout: 5000
+#日志配置
+logging:
+  level:
+    root: info
+    com.hlx.vbblog: info
+  file:
+    path: log/vb-Blog-pro.log
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.hlx.vbblog.entity
+  configuration:
+    #开启驼峰映射
+    map-underscore-to-camel-case: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+
+

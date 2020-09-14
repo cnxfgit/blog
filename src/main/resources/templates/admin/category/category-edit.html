@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>编辑分类</title>
+</head>
+<body style="background-color: #ffffff;">
+<form class="layui-form layuimini-form">
+    <input type="hidden" name="id"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">分类名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" lay-reqtext="分类名称不能为空" placeholder="请输入分类名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label required">分类简介</label>
+        <div class="layui-input-block">
+            <textarea name="introduction" lay-verify="required" lay-reqtext="分类简介不能为空" class="layui-textarea"
+                      placeholder="请输入分类简介"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否前台显示</label>
+        <div class="layui-input-block">
+            <input type="radio" name="display" value="true" title="是">
+            <input type="radio" name="display" value="false" title="否">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">颜色</label>
+        <div class="layui-input-block">
+            <div>
+                <div id="color-select" lay-verify="colorVer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/xm-select/xm-select.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    var category = [[${category}]];
+</script>
+<script src="/static/admin/my/js/category/category-edit.js"></script>
+</body>
+</html>

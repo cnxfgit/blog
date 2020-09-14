@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>回复评论</title>
+</head>
+<body style="background-color: #ffffff;">
+<form class="layui-form layuimini-form">
+    <div class="layui-form-item layui-form-text">
+        <input type="hidden" name="pid" th:value="${pid != null ? pid : ''}"/>
+        <input type="hidden" name="aid" th:value="${aid}"/>
+        <label class="layui-form-label required">回复内容</label>
+        <div class="layui-input-block" style="position: relative;">
+            <textarea name="reply" class="layui-textarea" lay-verify="required" lay-reqtext="回复内容不能为空"
+                      placeholder="请输入内容" oninput="wordLeg(this);" maxlength="80"></textarea>
+            <div class="word" style="position: absolute;right: 10px;bottom: 10px;color: #aaa;font-size: 12px;">
+                <span class="text_count">0</span>&nbsp;/&nbsp;<span class="num_count" id="numCount">80</span>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/my/js/comment/comment-add.js"></script>
+</body>
+</html>

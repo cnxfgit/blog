@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlx.vbblog.dao.ArticleMapper">
+    <resultMap id="tableResultMap" type="com.hlx.vbblog.model.Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="cover" column="cover"/>
+        <result property="type" column="type"/>
+        <result property="comments" column="comments"/>
+        <result property="views" column="views"/>
+        <result property="likes" column="likes"/>
+        <result property="published" column="published"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <association property="category" javaType="com.hlx.vbblog.model.Category">
+            <id property="id" column="cid"/>
+            <id property="name" column="cname"/>
+            <id property="color" column="color"/>
+        </association>
+        <association property="author" javaType="com.hlx.vbblog.model.User">
+            <id property="id" column="aid"/>
+            <id property="username" column="username"/>
+        </association>
+        <collection property="tagList" column="id" select="com.hlx.vbblog.dao.TagMapper.selectByArticleId"/>
+    </resultMap>
+
+    <resultMap id="updateResultMap" type="com.hlx.vbblog.model.Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="cover" column="cover"/>
+        <association property="category" javaType="com.hlx.vbblog.model.Category">
+            <id property="id" column="cid"/>
+            <id property="name" column="cname"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="previewResultMap" type="com.hlx.vbblog.model.Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="cover" column="cover"/>
+        <result property="createTime" column="create_time"/>
+        <association property="category" javaType="com.hlx.vbblog.model.Category">
+            <id property="id" column="cid"/>
+            <result property="name" column="cname"/>
+        </association>
+        <collection property="tagList" column="id" select="com.hlx.vbblog.dao.TagMapper.selectByArticleId"/>
+    </resultMap>
+
+    <resultMap id="detailResultMap" type="com.hlx.vbblog.model.Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="cover" column="cover"/>
+        <result property="content" column="content"/>
+        <result property="type" column="type"/>
+        <result property="comments" column="comments"/>
+        <result property="views" column="views"/>
+        <result property="likes" column="likes"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="author" javaType="com.hlx.vbblog.model.User">
+            <result property="username" column="username"/>
+        </association>
+        <association property="category" javaType="com.hlx.vbblog.model.Category">
+            <id property="id" column="cid"/>
+            <result property="name" column="cname"/>
+        </association>
+        <collection property="tagList" column="id" select="com.hlx.vbblog.dao.TagMapper.selectByArticleId"/>
+    </resultMap>
+
+    <sql id="previewColumn">
+        ta.id, ta.title, ta.summary, ta.create_time, ta.cover, tc.id as cid, tc.name as cname
+    </sql>
+
+    <select id="listTableByPage" resultMap="tableResultMap"
+            parameterType="com.baomidou.mybatisplus.extension.plugins.pagination.Page">
+        select ta.id, ta.title, ta.type, ta.cover, ta.comments, ta.views, ta.likes, ta.published
+        ,ta.status, ta.create_time, ta.update_time,
+        tc.id as cid, tc.name as cname, tc.color,
+        su.username
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        left join sys_user su
+        on ta.author_id = su.id
+        <if test="ew != null and ew.emptyOfWhere == false">
+            ${ew.customSqlSegment}
+        </if>
+        order by ta.create_time desc
+    </select>
+
+    <select id="listUpdate" resultMap="updateResultMap">
+        select  ta.id, ta.title, ta.summary, ta.cover, tc.id as cid, tc.name as cname
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        where ta.published = 1
+        and ta.status = 2
+        order by ta.update_time desc
+        limit #{limit}
+    </select>
+
+    <select id="listPreviewByPage" resultMap="previewResultMap"
+            parameterType="com.baomidou.mybatisplus.extension.plugins.pagination.Page">
+        select
+        <include refid="previewColumn"/>
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        where ta.published = 1
+        and ta.status = 2
+        order by ta.create_time desc
+    </select>
+
+    <select id="selectDetailById" resultMap="detailResultMap">
+        select ta.id, ta.title, ta.content, ta.cover, ta.create_time,ta.update_Time,ta.type, ta.likes, ta.views ,
+        ta.comments, tc.id as cid, tc.name as cname, su.id as uid, su.username from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        left join sys_user su
+        on ta.author_id = su.id
+        where ta.id = #{id}
+    </select>
+
+    <select id="selectPrevPreviewById" resultMap="previewResultMap">
+        select
+        <include refid="previewColumn"/>
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        where ta.id = (select max(id) from t_article where id &lt; #{id})
+        and ta.published = 1 and ta.status = 2
+    </select>
+
+    <select id="selectNextPreviewById" resultMap="previewResultMap">
+        select
+        <include refid="previewColumn"/>
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        where ta.id = (select min(id) from t_article where id &gt; #{id})
+        and ta.published = 1 and ta.status = 2
+    </select>
+
+    <select id="listPreviewPageByCategoryId" resultMap="previewResultMap"
+            parameterType="com.baomidou.mybatisplus.extension.plugins.pagination.Page">
+        select
+        <include refid="previewColumn"/>
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        where tc.id = #{categoryId}
+        and ta.published = 1 and ta.status = 2
+        order by ta.update_time desc
+    </select>
+
+    <select id="listPreviewPageByTagId" resultMap="previewResultMap"
+            parameterType="com.baomidou.mybatisplus.extension.plugins.pagination.Page">
+        select
+        <include refid="previewColumn"/>
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        left join t_article_tag tat
+        on ta.id = tat.article_id
+        where tat.tag_id = #{tagId}
+        and ta.published = 1 and ta.status = 2
+        order by ta.update_time desc
+    </select>
+
+    <select id="countByDate" resultType="com.hlx.vbblog.vo.ArticleDateVO">
+        select year(create_time) 'year'
+        <choose>
+            <when test="dft == 2">
+                , month(create_time) 'month'
+            </when>
+            <when test="dft == 1">
+                , month(create_time) 'month', day(create_time) 'day'
+            </when>
+        </choose>
+        , count(id) 'articleCount'
+        from t_article
+        where create_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+        and published = 1 and status = 2
+        <choose>
+            <when test="dft == 3">
+                group by year(create_time)
+            </when>
+            <when test="dft == 2">
+                group by year(create_time) ,month(create_time)
+            </when>
+            <when test="dft == 1">
+                group by year(create_time) ,month(create_time), day(create_time)
+            </when>
+        </choose>
+    </select>
+
+    <select id="listPreviewPageByDate" resultMap="previewResultMap"
+            parameterType="com.baomidou.mybatisplus.extension.plugins.pagination.Page">
+        select
+        <include refid="previewColumn"/>
+        from t_article ta
+        left join t_category tc
+        on ta.category_id = tc.id
+        where ta.published = 1 and ta.status = 2
+        order by ta.create_time desc
+    </select>
+</mapper>

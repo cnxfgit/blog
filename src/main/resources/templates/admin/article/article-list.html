@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>文章管理</title>
+</head>
+<body>
+<div class="layuimini-container" style="background-color: #ffffff;">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset" permission="blog:article:query">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" lay-filter="search-filter">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">文章标题</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" autocomplete="off" class="layui-input"
+                                       placeholder="不输入则忽略标题筛选">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">文章类型</label>
+                            <div class="layui-input-inline">
+                                <select name="type">
+                                    <option value="" selected>所有</option>
+                                    <option value="1">原创</option>
+                                    <option value="2">转载</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">文章分类</label>
+                            <div class="layui-input-inline">
+                                <select name="categoryId" lay-search id="category-select">
+                                    <option value="" selected>所有</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">发布状态</label>
+                            <div class="layui-input-inline">
+                                <select name="published">
+                                    <option value="" selected>所有</option>
+                                    <option value="true">发布</option>
+                                    <option value="false">草稿</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">审核状态</label>
+                            <div class="layui-input-inline">
+                                <select name="status">
+                                    <option value="" selected>所有</option>
+                                    <option value="0">审核未过</option>
+                                    <option value="1">等待审核</option>
+                                    <option value="2">审核通过</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">日期范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="date-range" placeholder="不输入则忽略日期范围筛选"
+                                       name="dateRange">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                            </button>
+                            <button type="reset" class="layui-btn layui-btn-primary"><i
+                                    class="layui-icon layui-icon-fonts-clear"></i> 清 空
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"
+                        permission="blog:article:delete"> 批量删除
+                </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="audit" permission="blog:article:audit">审核</a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit" permission="blog:article:edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"
+               permission="blog:article:delete">删除</a>
+        </script>
+    </div>
+</div>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/layuimini/js/lay-module/layuimini/miniTab.js"></script>
+<script src="/static/admin/my/js/article/article-list.js"></script>
+</body>
+</html>

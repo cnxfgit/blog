@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:include="front/fragments :: head(~{::title})">
+    <title>分类 | 菜鸟先飞</title>
+    <style type="text/css">
+        #category-radar {
+            width: 100%;
+            height: 360px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
+    <!--雷达图-->
+    <script type="text/javascript" src="/static/front/js/page/echarts.min.js"></script>
+</head>
+
+
+<body>
+<!--header-->
+<header th:replace="front/fragments :: header"></header>
+<!--end header-->
+
+<!--bgcover-->
+<div th:replace="front/fragments :: bgcover"></div>
+<!--end bgcover-->
+
+<div id="app">
+    <!--content-->
+    <main class="content">
+        <!--分类云-->
+        <div id="category-cloud" class="container chip-container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="tag-title center-align">
+                        <i class="fas fa-bookmark"></i>&nbsp;&nbsp;文章分类
+                    </div>
+                    <!--分类列表-->
+                    <div class="tag-chips">
+                        <a href="javascript:;" v-for="(cate,index) in categories" :key="cate.id"
+                           @click="getArticlesByCategoryId(cate.id, 1)" v-cloak>
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default" :style="{backgroundColor : cate.color}"
+                          :class="{'chip-active' : cate.id == categoryId}">{{cate.name}}
+                        <span class="tag-length">{{cate.articleCount}}</span>
+                    </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--分类雷达图-->
+        <div class="container" data-aos="fade-up" v-if="articles.length===0">
+            <div class="card">
+                <div id="category-radar" class="card-content"></div>
+            </div>
+        </div>
+        <!-- 所有文章卡片 -->
+        <article class="container articles" id="articleCards">
+            <div class="row article-row">
+                <div v-for="(article, index) in articles" :key="article.id">
+                    <div class="article col s12 m6 l4" data-aos="zoom-in">
+                        <div class="card articleCard">
+                            <!--卡片上部-->
+                            <a :href="'/article/'+article.id" target="_blank">
+                                <div class="card-image">
+                                    <!--文章图片-->
+                                    <img class="responsive-img lazy" src="http://vegetablebird.top:888/blog/2020/8/timg.gif"
+                                         :data-src="article.cover">
+                                    <!--文章标题-->
+                                    <span class="card-title">{{article.title}}</span>
+                                </div>
+                            </a>
+                            <!--卡片下部-->
+                            <div class="card-content article-content">
+                                <!--文章描述-->
+                                <div class="summary block-with-text">{{article.summary}}</div>
+                                <!--文章信息-->
+                                <div class="publish-info">
+                                    <!--发布日期-->
+                                    <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>{{article.createTime | dateFormat}}
+                                </span>
+                                    <!--文章分类-->
+                                    <span class="publish-author">
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                <a class="post-category" :href="'/page/categories?id='+article.category.id">{{article.category.name}}</a>
+                            </span>
+                                </div>
+                            </div>
+                            <!--文章标签-->
+                            <div class="card-action article-tags">
+                                <a :href="'/page/tags?id='+tag.id" v-for="(tag, index) in article.tagList">
+                                    <span class="chip bg-color">{{tag.name}}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <!--pagination-->
+        <div class="container paging" v-if="articles.length!==0">
+            <div class="row">
+                <!--左边按钮-->
+                <div class="col s4 m4 l4">
+                    <a class="left btn-floating btn-large waves-effect waves-light" @click="toPage(current-1)"
+                       href="#articleCards" :class="{disabled: current == 1}">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </div>
+                <!--分页信息-->
+                <div class="page-info col s4 m4 l4">
+                    <div class="center-align b-text-gray">{{current}} / {{pages}}</div>
+                </div>
+                <!--右边按钮-->
+                <div class="col s4 m4 l4">
+                    <a class="right btn-floating btn-large waves-effect waves-light"
+                       @click="toPage(current+1)" href="#articleCards" :class="{disabled: current == pages}">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--end pagination-->
+    </main>
+    <!--end content-->
+</div>
+
+<!--Vue-->
+<script type="text/javascript" src="/static/front/js/page/categories.js"></script>
+
+<!--footer-->
+<footer th:replace="front/fragments :: footer"></footer>
+<!--end footer-->
+
+<!--commons-->
+<div th:replace="front/fragments :: commons"></div>
+<!--end commons-->
+
+<!--scripts-->
+<div th:replace="front/fragments :: scripts"></div>
+<!--end scripts-->
+</body>
+</html>

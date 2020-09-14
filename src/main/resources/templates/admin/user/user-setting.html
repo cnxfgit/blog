@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="admin/home/common-header :: head(~{::title})">
+    <title>基本资料</title>
+</head>
+<style>
+    .layui-form-item {
+        width: auto;
+        padding-right: 10px;
+        line-height: 38px;
+    }
+    body .layuimini-container{
+        background-color: #ffffff;
+    }
+</style>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <form class="layui-form layuimini-form">
+            <input type="hidden" name="id"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" lay-verify="required|username" lay-reqtext="用户名不能为空"
+                           placeholder="请输入用户名"
+                           value=""
+                           class="layui-input" disabled>
+                    <tip>填写自己管理账号的名称</tip>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">昵称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="nickname" lay-verify="required|nickname" lay-reqtext="昵称不能为空"
+                           placeholder="请输入昵称"
+                           value=""
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="email" name="email" lay-verify="required|email" placeholder="请输入邮箱" value=""
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="saveBtn">确认修改</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--scripts-->
+<div th:replace="admin/home/common-header :: scripts"></div>
+<script src="/static/admin/my/js/user/user-setting.js"></script>
+</body>
+</html>
